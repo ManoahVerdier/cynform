@@ -42,14 +42,14 @@ class SiteController extends Controller
     }
 
     public function categorie($slug){
-        $categorie = Categorie::where('slug',$slug)->first();
+        $categorie = Categorie::where('slug',$slug)->firstOrFail();
         $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
         $formations = $categorie->formations()->get();
         return view ('categorie',compact('categories','categorie','formations'));
     }
 
     public function sous_categorie($slug){
-        $sous_categorie = SousCategorie::where('slug',$slug)->first();
+        $sous_categorie = SousCategorie::where('slug',$slug)->firstOrFail();
         $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
         $formations = $sous_categorie->formations()->get();
         return view ('sous_categorie',compact('categories','sous_categorie','formations'));
