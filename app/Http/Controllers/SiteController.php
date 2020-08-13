@@ -113,7 +113,6 @@ class SiteController extends Controller
             {
                 $message->from('contact@cyn-communication.fr');
                 $message->to('vmogenet@cyn-communication.fr', 'Admin')->subject('Contact Cyn-formation');
-                $message->to('verdier.developpement@gmail.com', 'Admin')->subject('Contact Cyn-formation');
             }
         );
         $categories = Categorie::distinct('nom')->get();
