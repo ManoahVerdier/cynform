@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * SiteController.php
+ * 
+ * PHP version 7.3
+ * 
+ * @category SiteController
+ * @package  Controllers
+ * @author   Manoah Verdier <verdier.developpement@gmail.com>
+ * @license  http://cyn-formation.fr/mentions-legales Custom Licence
+ * @link     http://cyn-formation.fr
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,67 +22,144 @@ use App\Page;
 use App\Faq;
 use App\FaqCategory;
 use App\Http\Requests\ContactRequest;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 use DB;
 
+/**
+ * Classe Controller principal des pages
+ *
+ * @category SiteController
+ * @package  Controllers
+ * @author   Manoah Verdier <verdier.developpement@gmail.com>
+ * @license  http://cyn-formation.fr/mentions-legales Custom Licence
+ * @link     http://cyn-formation.fr
+ */
 class SiteController extends Controller
 {
-    public function formation($id){
-
-        $formation = Formation::where('id',$id)->firstOrFail();
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
-        if(! isset($formation->sessions) || $formation->sessions==""){
-            $default = Formation::where('nom','=','default')->first();
-            $formation->session=$default->session;
-            return view ('formation',compact('categories','formation','default'));
+    /**
+     * Pages formations accédées par l'id
+     *
+     * @param Formation $formation la formation concernée
+     * 
+     * @return void
+     */
+    public function formation(Formation $formation)
+    {   
+        if (! isset($formation->sessions)) {
+            $formation->sessions=Formation::
+                where('nom', '=', 'default')
+                ->firstOrFail()
+                ->sessions;
         }
-        
-        return view ('formation',compact('categories','formation'));
+        return view(
+            'formation',
+            compact(
+                'formation'
+            )
+        );
     }
 
-    public function formationBySlug($slug){
-        $formation = Formation::where('slug','=',$slug)->firstOrFail();
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
-        if(! isset($formation->sessions) || $formation->sessions==""){
-            $default = Formation::where('nom','=','default')->firstOrFail();
-            $formation->session=$default->session;
-            return view ('formation',compact('categories','formation','default'));
+    /**
+     * Pages formations accédées par le slug
+     *
+     * @param Formation $formation la formation a afficher
+     * 
+     * @return void
+     */
+    public function formationBySlug(Formation $formation)
+    {
+        if (! isset($formation->sessions)) {
+            $formation->sessions=Formation::
+                where('nom', '=', 'default')
+                ->firstOrFail()
+                ->sessions;
         }
-        
-        return view ('formation',compact('categories','formation'));
+        return view(
+            'formation',
+            compact(
+                'formation'
+            )
+        );
     }
 
-    public function categorie($slug){
-        $categorie = Categorie::where('slug',$slug)->firstOrFail();
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
+    /**
+     * Page catégorie
+     * 
+     * @param string $slug le slug de la categorie
+     * 
+     * @return void
+     */
+    public function categorie($slug)
+    {
+        $categorie = Categorie::where('slug', $slug)->first();
         $formations = $categorie->formations()->get();
-        return view ('categorie',compact('categories','categorie','formations'));
+
+        return view(
+            'categorie', 
+            compact(
+                'categorie', 
+                'formations'
+            )
+        );
     }
 
-    public function sous_categorie($slug){
-        $sous_categorie = SousCategorie::where('slug',$slug)->firstOrFail();
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
+    /**
+     * Page sous-catégorie
+     * 
+     * @param string $slug le slug de la sous-categorie
+     * 
+     * @return void
+     */
+    public function sousCategorie($slug)
+    {
+        $sous_categorie = SousCategorie::where('slug', $slug)->first();
         $formations = $sous_categorie->formations()->get();
-        return view ('sous_categorie',compact('categories','sous_categorie','formations'));
+
+        return view(
+            'sous_categorie',
+            compact(
+                'sous_categorie',
+                'formations'
+            )
+        );
     }
 
-    public function contact($id="",$session=false){
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
+    /**
+     * Page contact
+     * 
+     * @param int   $id      l'id de formation concerné
+     * @param mixed $session la session choisie
+     * 
+     * @return void
+     */
+    public function contact($id="",$session=false)
+    {
         $formation=null;
-        if($id!=""){
-            $formation = Formation::where('id','=',$id)->firstOrFail();
-            //dd($formation);
-            if(! isset($formation->sessions) || $formation->sessions==""){
-                $default = Formation::where('nom','=','default')->firstOrFail();
-                //dd($default);
+        if ($id!="") {
+            $formation = Formation::where('id', '=', $id)->firstOrFail();
+            if (! isset($formation->sessions) || $formation->sessions=="") {
+                $default = Formation::where('nom', '=', 'default')->firstOrFail();
                 $formation->sessions=$default->sessions;
             }
         }
-        return view('contact', compact('categories','formation','session'));
+        return view(
+            'contact', 
+            compact(
+                'formation',
+                'session'
+            )
+        );
     }
 
-    public function contactPost(Request $request){
-        
+    /**
+     * Recoit le formulaire de contact POST
+     *
+     * @param Request $request le formulaire
+     * 
+     * @return void
+     */
+    public function contactPost(Request $request)
+    {
         $this->validate(
             $request, 
             [
@@ -87,21 +175,32 @@ class SiteController extends Controller
         );
         $slug="";
         $date_choisie=false;
-        if($request->get('formation_id') ?? false){
-            $formation = Formation::where('id','=',$request->get('formation_id'))->firstOrFail();
+
+        if ($request->get('formation_id') ?? false) {
+            $formation = Formation::where('id', '=', $request->get('formation_id'))
+                ->firstOrFail();
             $slug = $formation->slug;
             
-            if($request->get('session') != null ){
-                if($formation->sessions ?? false)
-                    $date_choisie = explode(',',$formation->sessions)[$request->get('session')];
-                else{
-                    $formation=Formation::where('nom','=','default')->firstOrFail();
-                    $date_choisie = explode(',',$formation->sessions)[$request->get('session')];
+            if ($request->get('session') != null ) {
+                if ($formation->sessions ?? false) {
+                    $date_choisie = explode(
+                        ',', 
+                        $formation->sessions
+                    )[$request->get('session')];
+                } else {
+                    $formation = Formation::where('nom', '=', 'default')
+                        ->firstOrFail();
+                    $date_choisie = explode(
+                        ',', 
+                        $formation->sessions
+                    )[$request->get('session')];
                 }
             }
         }
+
         Contact::create($request->all());
-        Mail::send('email',
+        Mail::send(
+            'email',
             array(
                 'nom' => $request->get('nom'),
                 'email' => $request->get('email'),
@@ -109,67 +208,121 @@ class SiteController extends Controller
                 'formation_message' => $request->get('message'),
                 'formation'=> $slug?$slug:"",
                 'date_choisie'=> $date_choisie?$date_choisie:false,
-            ), function($message)
-            {
+            ), function ($message) {
                 $message->from('contact@cyn-communication.fr');
-                $message->to('vmogenet@cyn-communication.fr', 'Admin')->subject('Contact Cyn-formation');
+                $message
+                    ->to('vmogenet@cyn-communication.fr', 'Admin')
+                    ->subject('Contact '.env("APP_NAME"));
             }
         );
-        $categories = Categorie::distinct('nom')->get();
-
-        return view('contact', compact('categories'))->with('success', 'Merci pour votre message !</br> Nous vous recontacterons sous peu');
-        //return back()->with('success', 'Merci pour votre message ! Nous vous recontacterons sous peu');
-    }
-
-    public function mentions_legales(){
-        $page=Page::where('slug','mentions-legales')->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('page', compact('page','categories'));
-    }
-
-    public function infos_pratiques(){
-        $page=Page::where('slug','infos-pratiques')->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('page', compact('page','categories'));
-    }
-
-    public function cgv(){
-        $page=Page::where('slug','cgv')->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('page', compact('page','categories'));
-    }
-
-    public function demarche_qualite(){
-        $page=Page::where('slug','demarche-qualite')->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('page', compact('page','categories'));
-    }
-
-    public function faqs(){
-        $faqs = FaqCategory::all();
-        $categories = Categorie::distinct('nom')->get();
-        return view('faqs', compact('faqs','categories'));
-    }
-
-    public function faq_categories($categ_slug){
-        $faq_categ = FaqCategory::where('slug',$categ_slug)->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('faq_category', compact('faq_categ','categories'));
-    }
-
-    public function faq($slug){
-        $faq = Faq::where('slug',$slug)->firstOrFail();
-        $categories = Categorie::distinct('nom')->get();
-        return view('faq', compact('faq','categories'));
-    }
-
-    public function contactRecrutement($id="",$session=false){
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
-        return view('contact_recrutement', compact('categories'));
-    }
-
-    public function contactRecrutementPost(Request $request){
         
+        return view('contact')
+            ->with(
+                'success', 
+                'Merci pour votre message !</br> Nous vous recontacterons sous peu'
+            );
+    }
+
+    /**
+     * Page mentions légales
+     *
+     * @return void
+     */
+    public function mentionsLegales()
+    {
+        $page=Page::where('slug', 'mentions-legales')->firstOrFail();
+        return view('page', compact('page'));
+    }
+
+    /**
+     * Page infos pratiques
+     *
+     * @return void
+     */
+    public function infosPratiques()
+    {
+        $page=Page::where('slug', 'infos-pratiques')->firstOrFail();
+        return view('page', compact('page'));
+    }
+
+    /**
+     * Page cgv
+     *
+     * @return void
+     */
+    public function cgv()
+    {
+        $page=Page::where('slug', 'cgv')->firstOrFail();
+        return view('page', compact('page'));
+    }
+
+    /**
+     * Page demarche qualite
+     *
+     * @return void
+     */
+    public function demarcheQualite()
+    {
+        $page=Page::where('slug', 'demarche-qualite')->firstOrFail();
+        return view('page', compact('page'));
+    }
+
+    /**
+     * Page index des catégories de faq
+     *
+     * @return void
+     */
+    public function faqs()
+    {
+        $faqs = FaqCategory::all();
+        return view('faqs', compact('faqs'));
+    }
+
+    /**
+     * Page index des faqs d'une catégorie
+     *
+     * @param string $categSlug le slug de la catégorie
+     * 
+     * @return void
+     */
+    public function categorieFaq($categSlug)
+    {
+        $faq_categ = FaqCategory::where('slug', $categSlug)->firstOrFail();
+        return view('faq_category', compact('faq_categ'));
+    }
+
+    /**
+     * Page d'une faq
+     *
+     * @param string $slug le slug de la question
+     * 
+     * @return void
+     */
+    public function faq($slug)
+    {
+        $faq = Faq::where('slug', $slug)->firstOrFail();
+        return view('faq', compact('faq'));
+    }
+
+    /**
+     * Page contact pour recrutement
+     *
+     * @return void
+     */
+    public function contactRecrutement()
+    {
+        return view('contact_recrutement');
+    }
+
+    /**
+     * Traitement du formulaire de recrutement POST 
+     * 
+     * @param Request $request le formulaire posté
+     * 
+     * @return void
+     */
+    public function contactRecrutementPost(Request $request)
+    {    
         $this->validate(
             $request, 
             [
@@ -185,32 +338,44 @@ class SiteController extends Controller
                 'g-recaptcha-response.required'=>"Merci de cocher le captcha"
             ]
         );
+
         $filePath = $this->upload($request->file('file'));
         Contact::create($request->all());
-        Mail::send('email',
+
+        Mail::send(
+            'email',
             array(
                 'nom' => $request->get('nom'),
                 'email' => $request->get('email'),
                 'telephone' => $request->get('telephone'),
                 'formation_message' => $request->get('message'),
                 'file'=>$filePath
-            ), function($message)
-            {
+            ), function ($message) {
                 $message->from('contact@cyn-communication.fr');
-                $message->to('vmogenet@cyn-communication.fr', 'Admin')->subject('Contact Cyn-formation');
-                //$message->to('verdier.developpement@gmail.com', 'Admin')->subject('Contact Cyn-formation');
+                $message
+                    ->to('vmogenet@cyn-communication.fr', 'Admin')
+                    ->subject('Contact '.env("app_name"));
             }
         );
-        $categories = Categorie::distinct('nom')->get();
-
-        return view('contact_recrutement', compact('categories'))->with('success', 'Merci pour votre message !</br> Nous vous recontacterons sous peu');
-        //return back()->with('success', 'Merci pour votre message ! Nous vous recontacterons sous peu');
+        return view('contact_recrutement')
+            ->with(
+                'success', 
+                'Merci pour votre message !</br> Nous vous recontacterons sous peu'
+            );
     }
 
+    /**
+     * Stocke un fichier soumis dans un formulaire
+     *
+     * @param file $file le fichier traité
+     * 
+     * @return void
+     */
     protected function upload($file)
     {
         if (!is_null($file) && isset($file) && $file->isValid()) {
-            $fileName = (new \DateTime())->format('d.m.Y-hsi').'.'.$file->guessExtension();
+            $fileName = (new \DateTime())
+                ->format('d.m.Y-hsi').'.'.$file->guessExtension();
             $file->move(storage_path() . '/app/public/uploads', $fileName);
             return '/storage/uploads/' . $fileName;
         } else {
@@ -219,14 +384,40 @@ class SiteController extends Controller
         }        
     }
 
-    public function recherche(Request $request){
-        $formations = Formation::where('titre','LIKE','%'.$request->get('search').'%')
-                                ->orWhere('contenu','LIKE','%'.$request->get('search').'%')
-                                ->orWhere('objectif','LIKE','%'.$request->get('search').'%')
-                                ->orWhere('infos_pratiques','LIKE','%'.$request->get('search').'%')->get();
-        $categorie = Categorie::where('slug',"qualite")->first();
+    /**
+     * Traitement du formulaire de recherche et affichage des résultats
+     * 
+     * @param Request $request les données postées
+     * 
+     * @return void
+     */
+    public function recherche(Request $request)
+    {
+        $formations = Formation::
+            where(
+                'titre', 
+                'LIKE', 
+                '%'.$request->get('search').'%'
+            )
+            ->orWhere(
+                'contenu', 
+                'LIKE', 
+                '%'.$request->get('search').'%'
+            )
+            ->orWhere(
+                'objectif', 
+                'LIKE', 
+                '%'.$request->get('search').'%'
+            )
+            ->orWhere(
+                'infos_pratiques',
+                'LIKE',
+                '%'.$request->get('search').'%'
+            )
+            ->get();
+
+        $categorie = Categorie::where('slug', "qualite")->first();
         $search = $request->get('search');
-        $categories = Categorie::distinct('nom')->orderBy('nom', 'ASC')->get();
-        return view ('recherche',compact('categories','categorie','formations','search'));
+        return view('recherche', compact('categorie', 'formations', 'search'));
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cyn-formation - Contact')
+@section('title', env("app_name").' - Contact')
 
 @section('captcha')
 <script src="https://www.google.com/recaptcha/api.js"></script>

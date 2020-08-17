@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cyn-formation')
+@section('title', env("app_name"))
 
 @section('body-attr')
 id="home-page"

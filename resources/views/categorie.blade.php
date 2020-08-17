@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', "Cyn-formation - ".$categorie->nom)
-@section('description', "Cyn-formation - ".$categorie->nom)
+@section('title', env("app_name")." - ".$categorie->nom)
+@section('description', env("app_name")." - ".$categorie->nom)
 
 @section('body-attr')
 id="form-page"

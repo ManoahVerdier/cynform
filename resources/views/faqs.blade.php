@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', "Cyn-formation - FAQ")
-@section('description', "Cyn-formation - FAQ")
+@section('title', env("app_name")." - FAQ")
+@section('description', env("app_name")." - FAQ")
 
 @section('body-attr')
 id="faqs-page"
