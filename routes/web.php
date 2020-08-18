@@ -1,7 +1,18 @@
 <?php
-
+/** 
+ * Page routes du web
+ * 
+ * PHP version 7.3
+ * 
+ * @category Routes
+ * @package  Routes
+ * @author   Manoah Verdier <verdier.developpement@gmail.com>
+ * @license  http://cyn-formation.fr/mentions-legales Custom Licence
+ * @link     http://cyn-formation.fr
+ */
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,34 +25,60 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-Route::get('/', function () {
-    $categories = App\Categorie::distinct('nom')->orderBy('nom','ASC')->get();
-    return view('home', compact('categories'));
-});
+Route::get('/', 'SiteController@homepage');
 
-Route::get('/formation/{id}', 'SiteController@formation')->name('formation');
-Route::get('/f/{slug}', 'SiteController@formationBySlug')->name('formation_slug');
-Route::get('/c/{slug}', 'SiteController@categorie')->name('categorie');
-Route::get('/sc/{slug}', 'SiteController@sous_categorie')->name('sous_categorie');
+Route::get('/formation/{formation}', 'SiteController@formation')
+    ->name('formation');
+Route::get('/f/{formation:slug}', 'SiteController@formationBySlug')
+    ->name('formation_slug');
+Route::get('/c/{slug}', 'SiteController@categorie')
+    ->name('categorie');
+Route::get('/sc/{slug}', 'SiteController@sousCategorie')
+    ->name('sous_categorie');
 
-Route::get('/contact/{id?}/{session?}', 'SiteController@contact')->name('contact');
-Route::post('/contact', ['as'=>'contact.store','uses'=>'SiteController@contactPost']);
-Route::post('/contact/{id}', ['as'=>'contact.store.form','uses'=>'SiteController@contactPost']);
 
-Route::get('/recrutement', 'SiteController@contactRecrutement')->name('contact_recrutement');
-Route::post('/recrutement', ['as'=>'contact_recrutement.store','uses'=>'SiteController@contactRecrutementPost']);
+Route::get('/contact/{id?}/{session?}', 'SiteController@contact')
+    ->name('contact');
+Route::post(
+    '/contact', 
+    ['as'=>'contact.store','uses'=>'SiteController@contactPost']
+);
+Route::post(
+    '/contact/{id}', 
+    ['as'=>'contact.store.form','uses'=>'SiteController@contactPost']
+);
 
-Route::post('/recherche', ['as'=>'recherche','uses'=>'SiteController@recherche']);
+Route::get('/recrutement', 'SiteController@contactRecrutement')
+    ->name('contact_recrutement');
+Route::post(
+    '/recrutement', 
+    [
+        'as'=>'contact_recrutement.store',
+        'uses'=>'SiteController@contactRecrutementPost'
+    ]
+);
 
-Route::get('/mentions-legales', 'SiteController@mentions_legales')->name('mentions_legales');
-Route::get('/infos-pratiques', 'SiteController@infos_pratiques')->name('infos_pratiques');
-Route::get('/cgv', 'SiteController@cgv')->name('cgv');
-Route::get('/demarche-qualite', 'SiteController@demarche_qualite')->name('demarche_qualite');
+Route::post(
+    '/recherche', 
+    ['as'=>'recherche','uses'=>'SiteController@recherche']
+);
+
+Route::get('/mentions-legales', 'SiteController@mentions_legales')
+    ->name('mentions_legales');
+Route::get('/infos-pratiques', 'SiteController@infos_pratiques')
+    ->name('infos_pratiques');
+Route::get('/cgv', 'SiteController@cgv')
+    ->name('cgv');
+Route::get('/demarche-qualite', 'SiteController@demarche_qualite')
+    ->name('demarche_qualite');
 
 Route::get('/faqs', 'SiteController@faqs')->name('faqs');
 Route::get('/faq/{slug}', 'SiteController@faq')->name('faq_slug');
 Route::get('/faq_categ/{slug}', 'SiteController@faq_categories')->name('faq_categ');
 
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});
+Route::group(
+    ['prefix' => 'admin'], 
+    function () {
+        Voyager::routes();
+    }
+);

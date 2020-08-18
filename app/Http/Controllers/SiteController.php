@@ -37,6 +37,16 @@ use DB;
 class SiteController extends Controller
 {
     /**
+     * Gestion de la page d'accueil
+     *
+     * @return void
+     */
+    public function homepage()
+    {
+        return view('home');
+    }
+    
+    /**
      * Pages formations accédées par l'id
      *
      * @param Formation $formation la formation concernée
