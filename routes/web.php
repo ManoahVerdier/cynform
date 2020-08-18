@@ -62,6 +62,7 @@ Route::post(
     '/recherche', 
     ['as'=>'recherche','uses'=>'SiteController@recherche']
 );
+Route::get('/recherche', 'SiteController@rechercheGet');
 
 Route::get('/mentions-legales', 'SiteController@mentions_legales')
     ->name('mentions_legales');
