@@ -86,8 +86,10 @@ header{
                 width:calc(100% + 80px);
             }
 
-            top:135px;
-            width:100%;
+            @media (min-width:767px){
+                top:135px;
+                width:100%;
+            }
             border-radius:0px;
             border:none;
             z-index:1;
