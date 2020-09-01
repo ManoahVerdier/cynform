@@ -73,7 +73,7 @@ Route::get('/infos-pratiques', 'SiteController@infos_pratiques')
 Route::get('/cgv', 'SiteController@cgv')
     ->name('cgv');
 Route::get('/demarche-qualite', 'SiteController@demarcheQualite')
-    ->name('demarcheQualite');
+    ->name('demarche_qualite');
 
 Route::get('/faqs', 'SiteController@faqs')->name('faqs');
 Route::get('/faq/{slug}', 'SiteController@faq')->name('faq_slug');
