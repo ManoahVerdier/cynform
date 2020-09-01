@@ -27,7 +27,7 @@
             </div>
             <div class="col-6 col-md px-1 px-md-2">
                 <img class="w-100 h-auto mb-3" src="{{asset('img/home/HP_labo.webp')}}"/>
-                <div class="w-100 text-upper expertise-categ pb-3 pb-md-0"><a href="{{route('categorie',array('slug'=>'qualite'))}}" class="font-weight-bold dark-grey">Qualité</a></div>
+                <div class="w-100 text-upper expertise-categ pb-3 pb-md-0"><a href="{{route('categorie',array('slug'=>'qualite-hygiene-securite'))}}" class="font-weight-bold dark-grey">Qualité</a></div>
             </div>
             <div class="col-6 col-md px-1 px-md-2">
                 <img class="w-100 h-auto mb-3" src="{{asset('img/home/HP_sante.webp')}}"/>
