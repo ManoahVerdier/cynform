@@ -108,8 +108,17 @@ header{
 #home-page{
     header{
         #domaines-sub{
-            top:135px;
-            width:100%;
+            @media (max-width:767px){
+                position:relative;
+                top:0px;
+                left:-40px;
+                width:calc(100% + 80px);
+            }
+
+            @media (min-width:767px){
+                top:135px;
+                width:100%;
+            }
             border-radius:0px;
             border:none;
             z-index:1;
