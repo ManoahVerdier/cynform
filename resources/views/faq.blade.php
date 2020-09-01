@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $faq->question)
+@section('title', $taglessTitle)
 @section('description', $faq->description)
 
 @section('body-attr')
@@ -11,6 +11,7 @@ id="faq-page"
 @section('header')
     @include('layouts.partials.header.main')
     @include('layouts.partials.header.mobile')
+    @include('layouts.partials.header.faq_breadcrumbs')
 @endsection
 
 
@@ -22,7 +23,7 @@ id="faq-page"
             <div class='col-12 col-md-9'>
                 <div id="title" class="p-2 mb-4">
                     <h1 class="text-left h4 mt-4 blue">
-                        {{$faq->question}}
+                        {!!$faq->question!!}
                     </h1>
                 </div>
                 <div class="content">

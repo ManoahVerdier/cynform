@@ -311,7 +311,21 @@ class SiteController extends Controller
     public function faq($slug)
     {
         $faq = Faq::where('slug', $slug)->firstOrFail();
+        $taglessTitle = html_entity_decode(strip_tags($faq->question), ENT_QUOTES, 'UTF-8');
         return view('faq', compact('faq'));
+    }
+
+    /**
+     * Page spécifique
+     *
+     * @param string $slug le slug de la page
+     * 
+     * @return void
+     */
+    public function page($slug)
+    {
+        $page = Page::where('slug', $slug)->firstOrFail();
+        return view('page', compact('page'));
     }
 
     /**
