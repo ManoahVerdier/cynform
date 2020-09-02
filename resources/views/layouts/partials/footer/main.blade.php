@@ -16,7 +16,8 @@
                 <span>{{env('APP_NAME')}} - Copyright 2020 - Tous droits reserves. | </span>
                 <a href="{{route('mentions_legales')}}">Mentions legales</a><span> | </span>
                 <a href="{{route('infos_pratiques')}}">Infos Pratiques</a><span> | </span>
-                <a href="{{route('cgv')}}">CGV</a>
+                <a href="{{route('cgv')}}">CGV</a><span> | </span>
+                <a href="{{route('pages')}}">Documentation</a><span> 
             </div>
         </div>
     </div>
