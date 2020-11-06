@@ -68,9 +68,9 @@ Route::post(
 );
 Route::get('/recherche', 'SiteController@rechercheGet');
 
-Route::get('/mentions-legales', 'SiteController@mentions_legales')
+Route::get('/mentions-legales', 'SiteController@mentionsLegales')
     ->name('mentions_legales');
-Route::get('/infos-pratiques', 'SiteController@infos_pratiques')
+Route::get('/infos-pratiques', 'SiteController@infosPratiques')
     ->name('infos_pratiques');
 Route::get('/cgv', 'SiteController@cgv')
     ->name('cgv');
@@ -79,7 +79,7 @@ Route::get('/demarche-qualite', 'SiteController@demarcheQualite')
 
 Route::get('/faqs', 'SiteController@faqs')->name('faqs');
 Route::get('/faq/{slug}', 'SiteController@faq')->name('faq_slug');
-Route::get('/faq_categ/{slug}', 'SiteController@faq_categories')->name('faq_categ');
+Route::get('/faq_categ/{slug}', 'SiteController@categorieFaq')->name('faq_categ');
 
 Route::group(
     ['prefix' => 'admin'], 
