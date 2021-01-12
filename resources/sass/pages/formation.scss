@@ -65,5 +65,20 @@
                 font-size:1.2rem;
             }
         }
+        img{
+            max-width:100%;
+        }
+
+        @media (max-width:676px){
+            .hidden-phone{
+                display:none;
+            }
+        }
+
+        @media (min-width:676px){
+            .hidden-desktop{
+                display:none;
+            }
+        }
     }
 }

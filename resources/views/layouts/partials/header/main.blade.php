@@ -1,8 +1,8 @@
 <header>
-    <div class="container" id="header-main">
+    <div class="container mb-2" id="header-main">
         <div class="row">
             <div class="col-6 col-md-3">
-                <div id="logo" class="px-md-3 px-0 mt-4">
+                <div id="logo" class="px-md-3 px-0 mt-3">
                     <a href="{{url('/')}}" class="d-inline-block h-80 w-100">
                         <img class=" mx-auto" src="{{asset('img/header/logo.png')}}"/>
                     </a>
