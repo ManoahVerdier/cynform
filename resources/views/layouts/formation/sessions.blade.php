@@ -1,5 +1,5 @@
 <div class="wrap mt-3" id="session">
-    <div class="row content">
+    <div class="row content bg-white mx-0">
         <div class="col-12 text-left py-2">
             <span class='blue font-weight-bold'> Formation en entreprise</span>
         </div>

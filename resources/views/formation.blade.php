@@ -21,7 +21,7 @@ id="form-page"
     <div class="container">
         <div class="row">
             <div class='col-12 col-md-9'>
-                <div id="title" class="p-2 mb-4">
+                <div id="title" class="p-2 mb-4 bg-light-grey">
                     <h1 class="text-left h4 mt-1 blue">
                         {{$formation->titre}}
                     </h1>

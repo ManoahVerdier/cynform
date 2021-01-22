@@ -2,7 +2,6 @@
     #title{
         h2{
             font-size:1rem;
-
             &.h5{
                 font-size:1.125rem !important;
             }
@@ -12,13 +11,6 @@
         #resume, #session{
             background:#F2F2F2;
             padding:30px 15px 30px 15px;
-
-            .content{
-                background:white;
-                margin-left:0px;
-                margin-right:0px;
-            }
-
             .line{
                 border-bottom:1px dashed #F2F2F2;
                 padding:10px 10px;
@@ -51,13 +43,7 @@
             }
         }
 
-        #title{
-            background:#f7f7f7;
-        }
-
         h3{
-            background:#303030;
-            color:#249fd5;
             padding-left:10px;
             padding-top:5px;
             padding-bottom:5px;
