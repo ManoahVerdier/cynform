@@ -1,4 +1,4 @@
-<footer class='p-3 mt-5'>
+<footer class='p-3 mt-5 bg-light-grey'>
     <div class="container">    
         <div class="row">
             <div class="col-12 col-md-6 text-center">
