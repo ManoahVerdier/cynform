@@ -2,11 +2,11 @@
 <html lang="fr" class="h-100 w-100 cyn">
     <head>
         <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        {{--<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-WV9DF45');</script>
+        })(window,document,'script','dataLayer','GTM-WV9DF45');</script>--}}
         <!-- End Google Tag Manager -->
 
         
@@ -63,23 +63,5 @@
         {!! Html::script(mix('/js/app.js')) !!}
         @show
 
-        <script>
-            function initFreshChat() {
-                if(window.fcWidget) {
-                    window.fcWidget.init({
-                        token: "4b595a1a-4a6f-4b35-92ca-71f3abba4e57",
-                        host: "https://wchat.eu.freshchat.com"
-                    });
-                }
-            }
-            function initialize(i,t){
-                var e;
-                i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.eu.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))
-            }
-            function initiateCall(){
-                initialize(document,"freshchat-js-sdk")
-            }
-            window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
-        </script>
     </body>
 </html>
