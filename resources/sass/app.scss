@@ -1,6 +1,6 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700&display=swap');
 
 // Variables
 @import 'variables';
@@ -26,10 +26,4 @@
 
 body{
     background-color:white;
-}
-
-/*Chat*/
-.cyn #fc_frame,.cyn #fc_frame.fc-widget-small{
-    bottom:50px;
-    right:5px;
 }
