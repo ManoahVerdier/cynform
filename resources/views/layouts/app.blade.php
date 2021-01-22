@@ -23,7 +23,10 @@
         <title>@yield('title')</title>
         <meta name="description" content="@yield('description')"/>
 
-        
+        {{-- CSS --}}
+        @section('css')
+        {!! Html::style(mix('/css/app.css')) !!}
+        @show
 
         @yield('captcha')
 
@@ -60,10 +63,5 @@
             <script src={{mix('/js/app.js')}} async></script>
         @show
         <script src="https://kit.fontawesome.com/4236d13d2d.js" crossorigin="anonymous"></script>
-
-        {{-- CSS --}}
-        @section('css')
-        {!! Html::style(mix('/css/app.css')) !!}
-        @show
     </body>
 </html>
