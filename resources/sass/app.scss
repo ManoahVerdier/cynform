@@ -10,10 +10,7 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-@import 'footer/main';
-
 @import 'header/main';
-@import 'header/breadcrumbs';
 
 @import 'pages/formation';
 @import 'pages/homepage';
@@ -26,4 +23,17 @@
 
 body{
     background-color:white;
+}
+
+footer{
+    background:#f7f7f7;
+
+    img{
+        max-width:200px;
+        height:auto;
+    }
+
+    .title{
+        font-size:1.3rem;
+    }
 }
