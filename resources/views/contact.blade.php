@@ -2,9 +2,9 @@
 
 @if($formation ?? false)
     @if($session)
-        @section('title', env("APP_NAME").' - Inscription '.$formation->title)
+        @section('title', env("APP_NAME").' - Inscription - '.$formation->titre)
     @else 
-        @section('title', env("APP_NAME").' - Contact '.$formation->title)
+        @section('title', env("APP_NAME").' - Contact - '.$formation->titre)
     @endif
 @else 
     @section('title', env("APP_NAME").' - Contact')
