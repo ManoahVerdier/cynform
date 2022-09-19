@@ -73,9 +73,7 @@
                                 <div class="dropdown-menu" aria-labelledby="infos-pratiques" id="infos-pratiques-sub">
                                     <div class="container px-0">
                                         <div class="row w-100 mx-0">
-                                                <div class="col-12 col-md-3 text-center">
-                                                    <a class="dropdown-item" href="{{route('demarche_qualite')}}">Démarche qualité</a>
-                                                </div>
+                                                
                                                 <div class="col-12 col-md-3 text-center">
                                                     <a class="dropdown-item" href="{{route('contact_recrutement')}}">Recrutement</a>
                                                 </div>

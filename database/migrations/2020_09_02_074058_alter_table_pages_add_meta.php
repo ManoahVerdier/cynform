@@ -15,7 +15,6 @@ class AlterTablePagesAddMeta extends Migration
     {
         Schema::table('pages', function (Blueprint $table) {
             $table->text('description');
-            $table->text('title');
         });
     }
 

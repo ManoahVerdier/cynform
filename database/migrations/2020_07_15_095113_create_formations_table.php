@@ -25,10 +25,12 @@ class CreateFormationsTable extends Migration {
 			$table->string('prix');
 			$table->string('type');
 			$table->timestamps();
-			$table->string('categorie_id');
-			$table->string('sous_categorie_id');
+			/*$table->string('categorie_id');
+			$table->string('sous_categorie_id');*/
 			$table->text('sessions', 65535)->nullable();
 			$table->string('slug')->nullable();
+			$table->string('categorie');
+			$table->string('sous_categorie');
 		});
 	}
 
